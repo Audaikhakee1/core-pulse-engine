@@ -101,23 +101,21 @@
             }
         }
 
-        async function executeAction(actionName) {
-            const statusIndicator = document.getElementById('status-indicator');
-            statusIndicator.innerHTML = '<span class="text-xs text-cyan-400 animate-pulse">جاري التنفيذ...</span>';
-            
-            try {
-                // ملاحظة: الرابط /deploy هو ما وضعناه في كود البايثون سابقاً
-                const response = await fetch(`${API_BASE}/deploy?type=${actionName}&provider=DemoMode`, {
-                    method: 'POST'
-                });
-                const data = await response.json();
-                alert("تم استقبال الرد من السحابة:\n" + data.message);
-                checkStatus();
-            } catch (error) {
-                alert("خطأ في الاتصال بالمحرك. تأكد أن Koyeb يعمل.");
-                checkStatus();
-            }
-        }
+       async function executeAction(actionName) {
+    try {
+        // إضافة Query Parameters لتتوافق مع كود البايثون
+        const response = await fetch(`${API_BASE}/deploy?type=${encodeURIComponent(actionName)}&provider=Koyeb`, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json' }
+        });
+        
+        const data = await response.json();
+        alert("استجابة الوحش الرقمي: " + data.message);
+    } catch (error) {
+        console.error("Error details:", error);
+        alert("خطأ في الاتصال. تأكد من تحديث كود البايثون (CORS) في Koyeb.");
+    }
+}
 
         function manualCommand() {
             const val = document.getElementById('cmd-input').value;
