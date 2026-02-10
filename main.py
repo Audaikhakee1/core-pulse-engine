@@ -1,7 +1,15 @@
 from fastapi import FastAPI
-import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# تصريح المرور العالمي (إصلاح مشكلة الـ CORS)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # يسمح لأي واجهة بالاتصال
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 async def root():
@@ -9,12 +17,7 @@ async def root():
 
 @app.post("/deploy")
 async def deploy_resource(type: str, provider: str):
-    # هنا يوضع منطق الربط مع AWS/DigitalOcean الذي صممه المهندسون
     return {
-        "message": f"Deploying {type} on {provider}...",
-        "id": "RES-88921",
-        "status": "provisioning"
+        "message": f"تم استقبال أمر: {type} عبر مزود: {provider}",
+        "status": "Success"
     }
-
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
