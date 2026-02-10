@@ -101,19 +101,14 @@
             }
         }
 
-       async function executeAction(actionName) {
+   async function executeAction(actionName) {
     try {
-        // إضافة Query Parameters لتتوافق مع كود البايثون
-        const response = await fetch(`${API_BASE}/deploy?type=${encodeURIComponent(actionName)}&provider=Koyeb`, {
-            method: 'POST',
-            headers: { 'Accept': 'application/json' }
-        });
-        
+        // نستخدم GET الآن لنتجنب أي تعقيدات أمنية إضافية
+        const response = await fetch(`${API_BASE}/deploy?type=${encodeURIComponent(actionName)}&provider=MobileApp`);
         const data = await response.json();
-        alert("استجابة الوحش الرقمي: " + data.message);
+        alert("استجابة الوحش: " + data.message);
     } catch (error) {
-        console.error("Error details:", error);
-        alert("خطأ في الاتصال. تأكد من تحديث كود البايثون (CORS) في Koyeb.");
+        alert("لا يزال هناك حاجز أمني (CORS). تأكد من تحديث البايثون.");
     }
 }
 
@@ -126,3 +121,4 @@
     </script>
 </body>
 </html>
+
